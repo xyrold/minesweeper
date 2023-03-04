@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Minesweeper</title>
+
+<style>
+/*mine sweeper*/
+#mineBox{
+    width:420px;
+}
+.mineItem {
+    float:left;
+    height: 80px;
+    width:80px;
+    background:#5B92FF;
+    margin:2px;
+    cursor:pointer;
+}
+.notBomb{
+    background:#ceff00;
+}
+.BombItem {
+    background:#ed1212;
+
+</style>
+</head>
+<body>
+  
+
+
+<h2>PHLWin Minesweeper</h2>
+
+<div class="row">
+    <div class="col-md-4" >
+        <div class="card card-body" style="width:480px;">
+            <div id="mineBox">
+                <div class="mineItem mItem_1"  data-item="1">1</div>
+                <div class="mineItem mItem_2"  data-item="2">2</div>
+                <div class="mineItem mItem_3"  data-item="3">3</div>
+                <div class="mineItem mItem_4"  data-item="4">4</div>
+                <div class="mineItem mItem_5"  data-item="5">5</div>
+                <div class="mineItem mItem_6"  data-item="6">6</div>
+                <div class="mineItem mItem_7"  data-item="7">7</div>
+                <div class="mineItem mItem_8"  data-item="8">8</div>
+                <div class="mineItem mItem_9"  data-item="9">9</div>
+                <div class="mineItem mItem_10"  data-item="10">10</div>
+                <div class="mineItem mItem_11"  data-item="11">11</div>
+                <div class="mineItem mItem_12"  data-item="12">12</div>
+                <div class="mineItem mItem_13"  data-item="13">13</div>
+                <div class="mineItem mItem_14"  data-item="14">14</div>
+                <div class="mineItem mItem_15"  data-item="15">15</div>
+                <div class="mineItem mItem_16"  data-item="16">16</div>
+                <div class="mineItem mItem_17"  data-item="17">17</div>
+                <div class="mineItem mItem_18"  data-item="18">18</div>
+                <div class="mineItem mItem_19"  data-item="19">19</div>
+                <div class="mineItem mItem_20"  data-item="20">20</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-primary" id="btnPlayAgain">Play Again</button>
+    </div>
+</div>
+
+
+
+
+    </div>
+    <script src="./jquery-3.3.1.min.js"></script>
+
+
+    
+    <script>
+
+        //random the bomb
+
+        const _minNum = 1;
+        const _maxNum = 20;
+
+        //store bomb location in array
+        let _bombLocation = [];
+
+
+        function initMine() {
+            _bombLocation = [];
+            //create 4 random locations of bomb
+            for (let i = 1; i <= 4; i++) {
+                const _rndBombLocation = Math.floor(Math.random() * (_maxNum - _minNum + 1)) + _minNum;
+
+                const _isExist = _bombLocation.indexOf(Number(_rndBombLocation)) > -1;
+                if (!_isExist) {
+                    _bombLocation.push(_rndBombLocation);
+                } else {
+                    i--;
+                }
+
+                console.log(_rndBombLocation);
+                console.log(_isExist);
+
+
+            }
+        }
+        /*const _rndBombLocation = Math.floor(Math.random() * (_maxNum - _minNum + 1)) + _minNum;*/
+
+        initMine();
+
+        
+
+        //when clicking the boxes
+        $(".mineItem").click(function () {
+            this.mineId = $(this).attr("data-item");
+            console.log(this.mineId);
+
+            //check bomb location
+            const _isExist = _bombLocation.indexOf(Number(this.mineId)) > -1;
+            console.log(_isExist);
+            if (_isExist) {
+                console.log("game over");
+
+                $(".mineItem").addClass("notBomb");
+
+                _bombLocation.forEach(function (itm) {
+                    $(".mItem_" + itm).removeClass("notBomb").addClass("BombItem");
+                })
+
+            } else {
+                console.log("win +1 point");
+                $(".mItem_" + this.mineId).addClass("notBomb");
+            }
+
+        })
+
+        $("#btnPlayAgain").click(function () {
+            initMine();
+            $(".mineItem").removeClass("notBomb").removeClass("BombItem");
+        })
+
+
+
+    </script>
+</body>
+</html>
